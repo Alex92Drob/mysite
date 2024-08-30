@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<main>
+    <br><br><br>
+    <div class="container">
+        <div class="profile">
+            <div class="profile-image">
+                {% if user.profile.photo %}
+                <img src="{{ user.profile.photo.url }}" alt="" style="width: 200px; height: 200px;">
+                {% endif %}
+            </div>
+            <div class="profile-user-settings">
+                <h6 class="profile-user-name">{{ user.first_name }} {{ user.last_name }}</h6>
+                <br>
+                <h5 style="font-size: 15px;" class="profile-user-name">@{{ user.username }}</h5>
+                <br><br>
+                {% if is_own_profile %}
+                <form method="get" action="{% url 'edit' %}">
+                    <button type="submit" class="btn profile-edit-btn">Edit Profile</button>
+                </form>
+                <br>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn profile-edit-btn">Logout</button>
+                </form>
+                {% else %}
+                {% if is_following %}
+                <form method="post" action="{% url 'unfollow_user' user.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn profile-edit-btn" style="color: red;">Unfollow</button>
+                </form>
+                {% else %}
+                <form method="post" action="{% url 'follow_user' user.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn profile-edit-btn" style="color: green;">Follow</button>
+                </form>
+                {% endif %}
+                {% endif %}
+            </div>
+            <div class="profile-bio">
+                <br>
+                <p><span class="profile-real-name"></span>◉ {{user.username}}</p>
+                <p><span class="profile-real-name"></span>◉ {{user.profile.date_of_birth}}</p>
+                <p><span class="profile-real-name"></span>◉ {{user.email}}</p>
+                <br><br>
+                <div class="profile-user-settings">
+                    <a href="#" class="btns profile-edit-btn">Posts</a>
+                    <a href="#" class="btns profile-edit-btn">Saved</a>
+                </div>
+            </div>
+            <div class="profile-stats">
+                <ul>
+                    <li><span class="profile-stat-count">{{posts_count}}</span>posts</li>
+                    <li><span class="profile-stat-count">{{ user.followers.count }}</span> followers</li>
+                    <li><span class="profile-stat-count">{{ user.following.count }}</span> following</li>
+                </ul>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="gallery">
+            {% for post in posts %}
+            {% for image in post.images.all %}
+            <a href="post.get_absolute_url">
+                <div class="gallery-item" tabindex="0">
+                    <img src="{{ image.image.url }}" class="gallery-image" alt=""
+                         style="width: 500px; height: 300px; object-fit: cover;">
+                    <div class="gallery-item-info">
+                        <ul>
+                            <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i
+                                    class="fas fa-heart" aria-hidden="true"></i> {{post.likes}}
+                            </li>
+                            <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i
+                                    class="fas fa-comment" aria-hidden="true"></i> {{post.comment.count}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</main>
+{% endblock %}

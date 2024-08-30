@@ -1,0 +1,39 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://kit.fontawesome.com/fc1e235b2e.js"></script>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <title>DjangoGramm | Register</title>
+</head>
+<body>
+  <br><br>
+  <div id="wrapper">
+    <div class="container">
+      <div class="phone-app-ddemo"></div>
+      <div class="form-data">
+        <form action="" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="logo">
+            <h3 style="padding: 20px; font-size: 20px;">Create your account</h3>
+          </div>
+          {% for field in form %}
+          <p>
+            {{ field.label_tag }}<br>
+            {{ field }}
+            {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+          {% endfor %}
+          </p>
+          {% endfor %}
+          <button class="form-btn" type="submit">Sign Up</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://kit.fontawesome.com/fc1e235b2e.js"></script>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <title>DjangoGramm | Login</title>
+</head>
+<body>
+<div id="wrapper">
+    <div class="container">
+        <div class="phone-app-demo"></div>
+        <div class="form-data">
+            <form action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <div class="logo">
+                    <img src="{% static 'assets/log.png' %}" alt="logo">
+                </div>
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                {{ form.password.label_tag }}
+                {{ form.password }}
+                <input type="hidden" name="next" value="{{ next }}"/>
+                <button class="form-btn" type="submit">Log in</button>
+                <span class="has-separator">Or</span>
+                <a class="facebook-login" href="{% url 'social:begin' 'facebook' %}">
+                    <i class="fab fa-facebook-square"></i> Log in with Facebook
+                </a>
+                <a class="password-reset" href="#">Forgot password?</a>
+            </form>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="sign-up">
+                    Don't have an account? <a href="{% url 'signup' %}">Sign up</a>
+                </div>
+            </form>
+
+            <div class="get-the-app">
+                <span></span>
+                <div class="badges">
+                    <img src="{% static 'assets/app-store.png' %}" alt="app-store badge">
+                    <img src="{% static 'assets/google-play.png' %}" alt="google-play badge">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
